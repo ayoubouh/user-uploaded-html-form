@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AFRAH AMINE - نموذج طلب التجهيزات</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            transition: all 0.3s ease;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(180deg, 
+                #000000 0%, 
+                #0a0800 5%, 
+                #1a1300 15%, 
+                #2a1f00 30%, 
+                #3d2d00 50%, 
+                #5c4500 75%, 
+                #8a6a00 90%,
+                #d4af37 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Animated gold particles background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.2) 0%, transparent 60%),
+                radial-gradient(circle at 80% 70%, rgba(245, 230, 200, 0.15) 0%, transparent 60%),
+                radial-gradient(circle at 40% 80%, rgba(230, 176, 40, 0.18) 0%, transparent 60%),
+                radial-gradient(circle at 60% 20%, rgba(212, 175, 55, 0.1) 0%, transparent 60%);
+            z-index: -1;
+            animation: pulse-glow 10s ease-in-out infinite alternate, gentle-move 20s ease-in-out infinite alternate;
+        }
+        
+        @keyframes pulse-glow {
+            0% {
+                opacity: 0.4;
+                transform: scale(1) rotate(0deg);
+            }
+            50% {
+                opacity: 0.7;
+            }
+            100% {
+                opacity: 0.6;
+                transform: scale(1.03) rotate(0.5deg);
+            }
+        }
+        
+        @keyframes gentle-move {
+            0% {
+                background-position: 0% 0%;
+            }
+            100% {
+                background-position: 2% 2%;
+            }
+        }
+        
+        /* Floating particles */
+        .particle {
+            position: fixed;
+            background: radial-gradient(circle, rgba(245, 230, 200, 0.8) 0%, rgba(212, 175, 55, 0.3) 30%, transparent 80%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -2;
+            filter: blur(1px);
+            animation: float-particle linear infinite;
+        }
+        
+        @keyframes float-particle {
+            0% {
+                transform: translateY(0px) translateX(0px) rotate(0deg);
+                opacity: 0.3;
+            }
+            25% {
+                transform: translateY(-20px) translateX(10px) rotate(90deg);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translateY(-40px) translateX(-10px) rotate(180deg);
+                opacity: 0.7;
+            }
+            75% {
+                transform: translateY(-20px) translateX(15px) rotate(270deg);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(0px) translateX(0px) rotate(360deg);
+                opacity: 0.3;
+            }
+        }
+        .arabic-font {
+            font-family: 'El Messiri', sans-serif;
+        }
+        .service-card {
+            border: 2px solid #e6b028;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+        }
+        .service-card.selected {
+            border-color: #f9e3a3;
+            border-width: 3px;
+            box-shadow: 0 0 50px rgba(245, 184, 46, 0.8), inset 0 0 30px rgba(245, 184, 46, 0.2);
+            background: linear-gradient(135deg, rgba(245, 184, 46, 0.25), rgba(249, 227, 163, 0.15));
+            transform: translateY(-10px) scale(1.03);
+            animation: pulse-gold 2s infinite;
+        }
+        
+        @keyframes pulse-gold {
+            0% { box-shadow: 0 0 50px rgba(245, 184, 46, 0.8), inset 0 0 30px rgba(245, 184, 46, 0.2); }
+            50% { box-shadow: 0 0 60px rgba(245, 184, 46, 0.9), inset 0 0 35px rgba(245, 184, 46, 0.25); }
+            100% { box-shadow: 0 0 50px rgba(245, 184, 46, 0.8), inset 0 0 30px rgba(245, 184, 46, 0.2); }
+        }
+        .service-card img {
+            height: 140px;
+            object-fit: cover;
+            width: 100%;
+        }
+        .step {
+            display: none;
+        }
+        .step.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .progress-bar {
+            height: 10px;
+            background: rgba(20, 15, 5, 0.8);
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(230, 176, 40, 0.3);
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f9e3a3, #f5b82e, #e6a91e);
+            width: 0%;
+            transition: width 0.6s ease;
+            box-shadow: 0 0 20px rgba(245, 184, 46, 0.8), inset 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #f8e9c8, #e6b028, #d4b15a);
+            color: #000;
+            font-weight: 800;
+            padding: 16px 36px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+            letter-spacing: 0.8px;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary:hover {
+            transform: translateY(-6px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(245, 184, 46, 0.9), 0 0 60px rgba(245, 184, 46, 0.4);
+            background: linear-gradient(135deg, #fff9e6, #f5c542, #e6b028);
+            color: #000;
+        }
+        .btn-secondary {
+            background: transparent;
+            color: #f5e6c8;
+            border: 2px solid #d4af37;
+            padding: 14px 32px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+        }
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(245, 230, 200, 0.1));
+            border-color: #f5e6c8;
+            color: #ffffff;
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+        }
+        .input-field {
+            background: rgba(20, 15, 5, 0.8);
+            border: 2px solid #d4af37;
+            border-radius: 15px;
+            padding: 18px 24px;
+            color: #ffffff;
+            width: 100%;
+            font-size: 17px;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #f5e6c8;
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.4);
+            background: rgba(20, 15, 5, 0.95);
+            transform: translateY(-2px);
+        }
+        .input-field::placeholder {
+            color: #c9a96e;
+            opacity: 0.8;
+        }
+        .lang-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 50px;
+            padding: 8px;
+            display: flex;
+            backdrop-filter: blur(10px);
+        }
+        .lang-btn {
+            padding: 8px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .lang-btn.active {
+            background: #c9a96e;
+            color: #000;
+        }
+        .social-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.15);
+            color: #f5e6c8;
+            font-size: 26px;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            border: 2px solid rgba(212, 175, 55, 0.5);
+        }
+        .social-icon:hover {
+            background: linear-gradient(135deg, #f5e6c8, #d4af37);
+            color: #000;
+            transform: translateY(-8px) scale(1.1);
+            border-color: #f5e6c8;
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.6);
+        }
+        .step-indicator {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(20, 15, 5, 0.9);
+            color: #d4af37;
+            font-weight: 800;
+            border: 3px solid #d4af37;
+            transition: all 0.4s ease;
+            font-size: 18px;
+        }
+        .step-indicator.active {
+            background: linear-gradient(135deg, #f5e6c8, #d4af37);
+            color: #000;
+            border-color: #f5e6c8;
+            box-shadow: 0 0 25px rgba(245, 230, 200, 0.9);
+            transform: scale(1.15);
+        }
+        .step-indicator.completed {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.3), rgba(245, 230, 200, 0.2));
+            color: #f5e6c8;
+            border-color: #f5e6c8;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+        .quantity-input {
+            width: 100px;
+            background: rgba(20, 15, 5, 0.9);
+            border: 2px solid #d4af37;
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: #ffffff;
+            text-align: center;
+            font-weight: 700;
+            font-size: 20px;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+        }
+        .quantity-input:focus {
+            outline: none;
+            border-color: #f5e6c8;
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.4);
+            transform: scale(1.05);
+        }
+        .quantity-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(20, 15, 5, 0.95);
+            color: #f5e6c8;
+            border: 3px solid #d4af37;
+            font-size: 26px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        .quantity-btn:hover {
+            background: linear-gradient(135deg, #f5e6c8, #d4af37);
+            color: #000;
+            border-color: #f5e6c8;
+            transform: scale(1.2) rotate(5deg);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.8);
+        }
+        .rtl {
+            direction: rtl;
+        }
+        .ltr {
+            direction: ltr;
+        }
+        @media (max-width: 768px) {
+            .service-card img {
+                height: 120px;
+            }
+            .step-title {
+                font-size: 1.5rem;
+            }
+        }
+        
+        /* Enhanced Typography */
+        .text-gold {
+            color: #f5b82e;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        .text-light-gold {
+            color: #f9e3a3;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+        }
+        .text-crisp-white {
+            color: #ffffff;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+            font-weight: 500;
+        }
+        .step-title {
+            color: #f5e6c8;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            letter-spacing: 0.5px;
+        }
+        label {
+            color: #f5e6c8;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        .service-card h3 {
+            color: #f5e6c8;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .service-card p {
+            color: #c9a96e;
+        }
+        .bg-gold-gradient {
+            background: linear-gradient(135deg, #f8e9c8, #e6b028, #d4b15a);
+        }
+        .border-gold {
+            border-color: #e6b028;
+        }
+    </style>
+</head>
+<body class="rtl arabic-font">
+    <!-- Background Hero Text -->
+    <div id="background-hero-text" class="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-15">
+        <div class="absolute top-1/4 left-1/4 transform -translate-x-1/2 -translate-y-1/2 text-gold font-['El_Messiri'] text-[12vw] md:text-[8vw] font-bold whitespace-nowrap transition-all duration-1000" data-ar="نحوّل مناسباتكم إلى لحظات استثنائية" data-fr="Nous créons des moments d'exception">نحوّل مناسباتكم إلى لحظات استثنائية</div>
+        <div class="absolute bottom-1/4 right-1/4 transform translate-x-1/2 translate-y-1/2 text-gold/70 font-['El_Messiri'] text-[10vw] md:text-[6vw] font-bold whitespace-nowrap transition-all duration-1000" data-ar="كل مناسبة… تحفة مُتقنة" data-fr="Chaque événement, une œuvre d'exception">كل مناسبة… تحفة مُتقنة</div>
+    </div>
+
+    <!-- Language Toggle -->
+    <div class="lang-toggle">
+        <div class="lang-btn active" id="lang-ar">العربية</div>
+        <div class="lang-btn" id="lang-fr">Français</div>
+    </div>
+
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Header -->
+        <header class="text-center mb-12 mt-8">
+            <div class="flex justify-center mb-6">
+                <div class="relative">
+                    <img src="https://i.imgur.com/LD6ePsi.jpeg" alt="AFRAH AMINE Logo" class="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-gold shadow-lg ring-4 ring-gold/30">
+                    <div class="absolute -bottom-2 -right-2 bg-gold-gradient text-black font-bold text-xs px-3 py-1 rounded-full">
+                        <i class="fas fa-crown mr-1"></i> Luxury
+                    </div>
+                </div>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gradient">AFRAH AMINE</h1>
+            <p class="text-xl text-light-gold mb-3" data-ar="نموذج طلب تجهيزات الأفراح والمناسبات" data-fr="Formulaire de commande pour événements et mariages">نموذج طلب تجهيزات الأفراح والمناسبات</p>
+            <div class="bg-gradient-to-r from-gold/10 to-gold/5 border border-gold/30 rounded-xl p-4 mb-2 max-w-md mx-auto">
+                <div class="flex items-center justify-center space-x-3">
+                    <div class="w-8 h-8 rounded-full bg-gold-gradient flex items-center justify-center text-black">
+                        <i class="fas fa-info"></i>
+                    </div>
+                    <p class="text-sm text-light-gold font-medium" data-ar="يمكنك تعديل الصور والمواد والخدمات في أي وقت - هذا النموذج يعتمد على HTML فقط ولا يحتاج إلى ملفات أخرى - بعد الإرسال، يمكنك التواصل معنا للمزيد من التفاصيل" data-fr="Vous pouvez modifier les photos, matériaux et services à tout moment - Ce formulaire utilise uniquement HTML et ne nécessite aucun autre fichier - Après soumission, vous pouvez nous contacter pour plus de détails">يمكنك تعديل الصور والمواد والخدمات في أي وقت - هذا النموذج يعتمد على HTML فقط ولا يحتاج إلى ملفات أخرى - بعد الإرسال، يمكنك التواصل معنا للمزيد من التفاصيل</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Progress Bar -->
+        <div class="mb-10">
+            <div class="flex justify-between items-center mb-4">
+                <div class="step-indicator active" data-step="1">1</div>
+                <div class="step-indicator" data-step="2">2</div>
+                <div class="step-indicator" data-step="3">3</div>
+                <div class="step-indicator" data-step="4">4</div>
+                <div class="step-indicator" data-step="5">5</div>
+                <div class="step-indicator" data-step="6">6</div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+
+        <!-- Form Steps -->
+        <div class="form-steps">
+            <!-- Step 1: Categories & Services -->
+            <div class="step active" id="step-1">
+                <h2 class="step-title text-3xl font-bold mb-8" data-ar="اختر الفئات والخدمات المطلوبة" data-fr="Choisissez les catégories et services requis">اختر الفئات والخدمات المطلوبة</h2>
+                <p class="text-lg text-light-gold mb-10 text-center max-w-2xl mx-auto" data-ar="انقر على الفئة لرؤية الخدمات المتاحة واختيار الكميات المطلوبة" data-fr="Cliquez sur une catégorie pour voir les services disponibles et sélectionner les quantités requises">انقر على الفئة لرؤية الخدمات المتاحة واختيار الكميات المطلوبة</p>
+                
+                <div class="space-y-6 mb-10" id="categories-container">
+                    <!-- Categories will be populated by JavaScript -->
+                </div>
+                
+                <div class="flex justify-between mt-12">
+                    <div></div>
+                    <button class="btn-primary" onclick="nextStep()" data-ar="التالي" data-fr="Suivant">التالي</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Quantities -->
+            <div class="step" id="step-2">
+                <h2 class="step-title text-3xl font-bold mb-8" data-ar="حدد الكميات" data-fr="Spécifiez les quantités">حدد الكميات</h2>
+                <div class="space-y-6 mb-10" id="quantities-container">
+                    <!-- Quantity inputs will be added here -->
+                </div>
+                <div class="flex justify-between mt-12">
+                    <button class="btn-secondary" onclick="prevStep()" data-ar="السابق" data-fr="Précédent">السابق</button>
+                    <button class="btn-primary" onclick="nextStep()" data-ar="التالي" data-fr="Suivant">التالي</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Personal Info -->
+            <div class="step" id="step-3">
+                <h2 class="step-title text-3xl font-bold mb-8" data-ar="المعلومات الشخصية" data-fr="Informations personnelles">المعلومات الشخصية</h2>
+                <div class="max-w-md mx-auto space-y-6 mb-10">
+                    <div>
+                        <label class="block mb-2 text-lg" data-ar="الاسم الكامل" data-fr="Nom complet">الاسم الكامل</label>
+                        <input type="text" class="input-field" id="customer-name" placeholder="أدخل الاسم الكامل">
+                    </div>
+                    <div>
+                        <label class="block mb-2 text-lg" data-ar="رقم الهاتف" data-fr="Numéro de téléphone">رقم الهاتف</label>
+                        <input type="tel" class="input-field" id="customer-phone" placeholder="أدخل رقم الهاتف">
+                    </div>
+                </div>
+                <div class="flex justify-between mt-12">
+                    <button class="btn-secondary" onclick="prevStep()" data-ar="السابق" data-fr="Précédent">السابق</button>
+                    <button class="btn-primary" onclick="nextStep()" data-ar="التالي" data-fr="Suivant">التالي</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Location -->
+            <div class="step" id="step-4">
+                <h2 class="step-title text-3xl font-bold mb-8" data-ar="الموقع" data-fr="Localisation">الموقع</h2>
+                <div class="max-w-md mx-auto space-y-6 mb-10">
+                    <div>
+                        <label class="block mb-2 text-lg" data-ar="المدينة" data-fr="Ville">المدينة</label>
+                        <input type="text" class="input-field" id="customer-city" placeholder="أدخل اسم المدينة">
+                    </div>
+                    <div>
+                        <label class="block mb-2 text-lg" data-ar="رابط موقع جوجل ماب (اختياري)" data-fr="Lien Google Maps (optionnel)">رابط موقع جوجل ماب (اختياري)</label>
+                        <input type="url" class="input-field" id="customer-map" placeholder="https://www.google.com/maps/...">
+                    </div>
+                </div>
+                <div class="flex justify-between mt-12">
+                    <button class="btn-secondary" onclick="prevStep()" data-ar="السابق" data-fr="Précédent">السابق</button>
+                    <button class="btn-primary" onclick="nextStep()" data-ar="التالي" data-fr="Suivant">التالي</button>
+                </div>
+            </div>
+
+            <!-- Step 5: Social Media -->
+            <div class="step" id="step-5">
+                <h2 class="step-title text-3xl font-bold mb-8" data-ar="تابعنا على وسائل التواصل الاجتماعي" data-fr="Suivez-nous sur les réseaux sociaux">تابعنا على وسائل التواصل الاجتماعي</h2>
+                <div class="flex justify-center space-x-6 mb-16">
+                    <a href="https://www.instagram.com/aferah_amine" target="_blank" class="social-icon">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.facebook.com/share/14NAfFjHUSa" target="_blank" class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://wa.me/212643909940" target="_blank" class="social-icon">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+                <div class="text-center mb-10">
+                    <p class="text-lg mb-6 text-light-gold font-semibold" data-ar="تواصل معنا عبر:" data-fr="Contactez-nous via :">تواصل معنا عبر:</p>
+                    <div class="bg-gradient-to-r from-gray-900/50 to-gray-800/30 rounded-2xl p-6 max-w-md mx-auto border border-gold/30">
+                        <div class="space-y-4 text-crisp-white">
+                            <div class="flex items-center justify-center space-x-3">
+                                <div class="w-10 h-10 rounded-full bg-gold-gradient flex items-center justify-center text-black">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <span id="contact-phone" class="text-lg font-semibold">+212 643 909 940</span>
+                            </div>
+                            <div class="flex items-center justify-center space-x-3">
+                                <div class="w-10 h-10 rounded-full bg-gold-gradient flex items-center justify-center text-black">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <span id="contact-email" class="text-lg">aminefrniss@gmail.com</span>
+                            </div>
+                            <div class="flex items-center justify-center space-x-3">
+                                <div class="w-10 h-10 rounded-full bg-gold-gradient flex items-center justify-center text-black">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <a href="https://www.google.com/maps?q=31.689500,-8.074500" target="_blank" class="text-light-gold hover:text-gold hover:underline text-lg">Google Maps Location</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-between mt-12">
+                    <button class="btn-secondary" onclick="prevStep()" data-ar="السابق" data-fr="Précédent">السابق</button>
+                    <button class="btn-primary" onclick="nextStep()" data-ar="التالي" data-fr="Suivant">التالي</button>
+                </div>
+            </div>
+
+            <!-- Step 6: Order Summary -->
+            <div class="step" id="step-6">
+                <h2 class="step-title text-3xl font-bold mb-8" data-ar="ملخص الطلب" data-fr="Récapitulatif de la commande">ملخص الطلب</h2>
+                <div class="bg-gradient-to-br from-gray-900/80 to-gray-800/60 rounded-2xl p-8 mb-10 border border-gold/30 shadow-2xl">
+                    <div class="space-y-8">
+                        <div class="bg-gradient-to-r from-gray-900/60 to-gray-800/40 p-5 rounded-xl border-l-4 border-gold">
+                            <h3 class="text-2xl font-bold mb-5 text-light-gold flex items-center" data-ar="الخدمات المختارة" data-fr="Services sélectionnés">
+                                <i class="fas fa-list-check mr-3"></i> الخدمات المختارة
+                            </h3>
+                            <div id="summary-services" class="space-y-4">
+                                <!-- Services summary will be added here -->
+                            </div>
+                        </div>
+                        <div class="bg-gradient-to-r from-gray-900/60 to-gray-800/40 p-5 rounded-xl border-l-4 border-gold">
+                            <h3 class="text-2xl font-bold mb-5 text-light-gold flex items-center" data-ar="المعلومات الشخصية" data-fr="Informations personnelles">
+                                <i class="fas fa-user-circle mr-3"></i> المعلومات الشخصية
+                            </h3>
+                            <div id="summary-personal" class="space-y-3">
+                                <!-- Personal info summary will be added here -->
+                            </div>
+                        </div>
+                        <div class="bg-gradient-to-r from-gray-900/60 to-gray-800/40 p-5 rounded-xl border-l-4 border-gold">
+                            <h3 class="text-2xl font-bold mb-5 text-light-gold flex items-center" data-ar="الموقع" data-fr="Localisation">
+                                <i class="fas fa-map-marker-alt mr-3"></i> الموقع
+                            </h3>
+                            <div id="summary-location" class="space-y-3">
+                                <!-- Location summary will be added here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-between mt-12">
+                    <button class="btn-secondary" onclick="prevStep()" data-ar="السابق" data-fr="Précédent">السابق</button>
+                    <button class="btn-primary" onclick="nextStep()" data-ar="التالي" data-fr="Suivant">التالي</button>
+                </div>
+            </div>
+
+            <!-- Step 7: WhatsApp Submission -->
+            <div class="step" id="step-7">
+                <h2 class="step-title text-3xl font-bold mb-8" data-ar="إرسال الطلب" data-fr="Envoyer la commande">إرسال الطلب</h2>
+                <div class="text-center mb-12">
+                    <div class="mb-10">
+                        <i class="fab fa-whatsapp text-6xl text-green-500 mb-6"></i>
+                        <p class="text-xl mb-6 max-w-2xl mx-auto" data-ar="انقر على الزر أدناه لإرسال طلبك مباشرة عبر واتساب. سيقوم النظام بإنشاء رسالة جاهزة تحتوي على جميع تفاصيل طلبك." data-fr="Cliquez sur le bouton ci-dessous pour envoyer votre demande directement via WhatsApp. Le système générera un message pré-rempli avec tous les détails de votre commande.">انقر على الزر أدناه لإرسال طلبك مباشرة عبر واتساب. سيقوم النظام بإنشاء رسالة جاهزة تحتوي على جميع تفاصيل طلبك.</p>
+                    </div>
+                    <button class="btn-primary text-xl px-12 py-5 mb-10" onclick="sendViaWhatsApp()">
+                        <i class="fab fa-whatsapp mr-2"></i>
+                        <span data-ar="إرسال الطلب عبر واتساب" data-fr="Envoyer la demande via WhatsApp">إرسال الطلب عبر واتساب</span>
+                    </button>
+                    <p class="text-gray-400" data-ar="يمكنك أيضاً التواصل معنا مباشرة على الرقم: +212 643 909 940" data-fr="Vous pouvez également nous contacter directement au : +212 643 909 940">يمكنك أيضاً التواصل معنا مباشرة على الرقم: +212 643 909 940</p>
+                </div>
+                <div class="flex justify-between mt-12">
+                    <button class="btn-secondary" onclick="prevStep()" data-ar="السابق" data-fr="Précédent">السابق</button>
+                    <button class="btn-primary" onclick="restartForm()" data-ar="بدء طلب جديد" data-fr="Nouvelle commande">بدء طلب جديد</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-20 pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
+            <p data-ar="جميع الحقوق محفوظة © 2023 AFRAH AMINE - تجهيزات الأفراح والمناسبات" data-fr="Tous droits réservés © 2023 AFRAH AMINE - Équipements pour événements et mariages">جميع الحقوق محفوظة © 2023 AFRAH AMINE - تجهيزات الأفراح والمناسبات</p>
+        </footer>
+    </div>
+
+    <script>
+        /*
+        ============================================
+        AFRAH AMINE - Wedding & Events Order Form
+        ============================================
+        
+        EDITING INSTRUCTIONS:
+        ---------------------
+        1. To change service photos: Update the 'image' URLs in the items array below
+        2. To change service names: Update 'nameAr' (Arabic) and 'nameFr' (French) in categories and items arrays
+        3. To change contact info: Update phone, email, and social media links in the HTML
+        4. To change colors: Modify the CSS variables and gradient backgrounds
+        5. To add more items: Add new objects to the items array within appropriate categories
+        
+        HOSTING INFORMATION:
+        --------------------
+        - This is a SINGLE HTML FILE that contains everything (HTML, CSS, JavaScript)
+        - No backend or database required
+        - Can be hosted on ANY web server or used locally
+        - To make it live: Upload this index.html file to any web hosting service
+        - Recommended: Netlify, GitHub Pages, Vercel, or traditional web hosting
+        
+        PHOTO EDITING:
+        --------------
+        - All item photos are from Unsplash (royalty-free)
+        - Replace the image URLs with your own photos
+        - You can use Imgur, Dropbox, Google Drive, or any image hosting service
+        - Maintain aspect ratio for best visual results
+        
+        All changes are immediately reflected in the form.
+        ============================================
+        */
+        
+        // Application state
+        const state = {
+            currentLang: 'ar',
+            currentStep: 1,
+            selectedItems: {}, // key: itemId, value: {id, quantity, categoryId, nameAr, nameFr, image}
+            categories: [
+                {
+                    id: 1,
+                    nameAr: 'كراء المعدات',
+                    nameFr: 'Location de matériel',
+                    icon: 'fas fa-boxes',
+                    expanded: true
+                },
+                {
+                    id: 2,
+                    nameAr: 'التجهيزات الفاخرة',
+                    nameFr: 'Équipements de luxe',
+                    icon: 'fas fa-crown',
+                    expanded: false
+                },
+                {
+                    id: 3,
+                    nameAr: 'خدمات التنظيم',
+                    nameFr: 'Services d\'organisation',
+                    icon: 'fas fa-calendar-check',
+                    expanded: false
+                }
+            ],
+            items: [
+                // Category 1: Equipment Rental (كراء المعدات)
+                {
+                    id: 101,
+                    categoryId: 1,
+                    nameAr: 'الكراسي',
+                    nameFr: 'Chaises',
+                    image: 'https://images.unsplash.com/photo-1595423128107-1c4818e22107?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                    descriptionAr: 'كراسي فاخرة للمناسبات بألوان وأحجام مختلفة',
+                    descriptionFr: 'Chaises de luxe pour événements en différentes couleurs et tailles'
+                },
+                {
+                    id: 102,
+                    categoryId: 1,
+                    nameAr: 'الطاولات',
+                    nameFr: 'Tables',
+                    image: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                    descriptionAr: 'طاولات بأشكال وأحجام متنوعة للاحتفالات',
+                    descriptionFr: 'Tables en différentes formes et tailles pour célébrations'
+                },
+                {
+                    id: 103,
+                    categoryId: 1,
+                    nameAr: 'الخيام',
+                    nameFr: 'Tentes',
+                    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                    descriptionAr: 'خيام فاخرة للزفاف والمناسبات الكبيرة',
+                    descriptionFr: 'Tentes de luxe pour mariages et grands événements'
+                },
+                {
+                    id: 104,
+                    categoryId: 1,
+                    nameAr: 'أدوات المائدة',
+                    nameFr: 'Vaisselle',
+                    image: 'https://images.unsplash.com/photo-1556909114-92b8a45c81ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                    descriptionAr: 'أدوات مائدة ذهبية وفضية فاخرة',
+                    descriptionFr: 'Vaisselle dorée et argentée de luxe'
+                },
+                {
+                    id: 105,
+                    categoryId: 1,
+                    nameAr: 'الإضاءة',
+                    nameFr: 'Éclairage',
+                    image: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                    descriptionAr: 'إضاءة رومانسية ومتطورة للمناسبات',
+                    descriptionFr: 'Éclairage romantique et avancé pour événements'
+                },
+                {
+                    id: 106,
+                    categoryId: 1,
+                    nameAr: 'الصوتيات',
+                    nameFr: 'Sonorisation',
+                    image: 'https://images.unsplash.com/photo-1563089145-599997674d42?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                    descriptionAr: 'أنظمة صوت عالية الجودة للمناسبات',
+                    descriptionFr: 'Systèmes audio haute qualité pour événements'
+                },
+                {
+                    id: 107,
+                    categoryId: 1,
+                    nameAr: 'الديكور',
+                    nameFr: 'Décoration',
+                    image: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                    descriptionAr: 'ديكورات فاخرة للزفاف والمناسبات',
+                    descriptionFr: 'Décoration de luxe pour mariages et événements'
+                },
+                // Category 2: Luxury Equipment (التجهيزات الفاخرة)
+                {
+                    id: 201,
+                    categoryId: 2,
+                    nameAr: 'كراسي مخملية ملكية',
+                    nameFr: 'Chaises en velours royales',
+                    image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                    descriptionAr: 'كراسي مخملية فاخرة بتصميم ملكي',
+                    descriptionFr: 'Chaises en velours luxueuses avec design royal'
+                },
+                {
+                    id: 202,
+                    categoryId: 2,
+                    nameAr: 'طاولات كريستال',
+                    nameFr: 'Tables en cristal',
+                    image: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                    descriptionAr: 'طاولات كريستال فاخرة بتصميم أنيق',
+                    descriptionFr: 'Tables en cristal luxueuses avec design élégant'
+                },
+                {
+                    id: 203,
+                    categoryId: 2,
+                    nameAr: 'ثريات كريستال',
+                    nameFr: 'Lustres en cristal',
+                    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                    descriptionAr: 'ثريات كريستال فاخرة تضفي جواً من الفخامة',
+                    descriptionFr: 'Lustres en cristal luxueux créant une ambiance d\'élégance'
+                },
+                // Category 3: Organization Services (خدمات التنظيم)
+                {
+                    id: 301,
+                    categoryId: 3,
+                    nameAr: 'تنظيم كامل للحدث',
+                    nameFr: 'Organisation complète',
+                    image: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                    descriptionAr: 'تنظيم شامل لكل تفاصيل المناسبة من البداية للنهاية',
+                    descriptionFr: 'Organisation complète de l\'événement du début à la fin'
+                },
+                {
+                    id: 302,
+                    categoryId: 3,
+                    nameAr: 'تنسيق الزهور',
+                    nameFr: 'Fleurs arrangées',
+                    image: 'https://images.unsplash.com/photo-1464207687429-7505649dae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                    descriptionAr: 'تنسيق وتزيين الزهور باحترافية',
+                    descriptionFr: 'Arrangement floral décoratif professionnel'
+                },
+                {
+                    id: 303,
+                    categoryId: 3,
+                    nameAr: 'خدمات الضيافة',
+                    nameFr: 'Services d\'hospitalité',
+                    image: 'https://images.unsplash.com/photo-1559925393-8be0ec4767c8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+                    descriptionAr: 'خدمات ضيافة متكاملة للضيوف',
+                    descriptionFr: 'Services d\'hospitalité complets pour les invités'
+                }
+            ]
+        };
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initCategories();
+            setupLanguageToggle();
+            updateProgressBar();
+            updateStepIndicators();
+            createFloatingParticles();
+        });
+
+        // Create floating particles for background animation
+        function createFloatingParticles() {
+            const particlesContainer = document.createElement('div');
+            particlesContainer.id = 'particles-container';
+            particlesContainer.style.position = 'fixed';
+            particlesContainer.style.top = '0';
+            particlesContainer.style.left = '0';
+            particlesContainer.style.width = '100%';
+            particlesContainer.style.height = '100%';
+            particlesContainer.style.pointerEvents = 'none';
+            particlesContainer.style.zIndex = '-1';
+            document.body.appendChild(particlesContainer);
+            
+            // Create 15 floating particles
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random size between 30px and 100px
+                const size = Math.random() * 70 + 30;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Random animation duration between 20s and 40s
+                const duration = Math.random() * 20 + 20;
+                particle.style.animationDuration = `${duration}s`;
+                
+                // Random delay
+                const delay = Math.random() * 5;
+                particle.style.animationDelay = `${delay}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Initialize categories UI
+        function initCategories() {
+            const container = document.getElementById('categories-container');
+            container.innerHTML = '';
+            
+            state.categories.forEach(category => {
+                const categoryItems = state.items.filter(item => item.categoryId === category.id);
+                
+                const categoryCard = document.createElement('div');
+                categoryCard.className = 'category-card bg-gradient-to-r from-gray-900/70 to-gray-800/50 rounded-2xl border-2 border-gold/40 overflow-hidden transition-all duration-500';
+                categoryCard.dataset.id = category.id;
+                
+                // Category header
+                const header = document.createElement('div');
+                header.className = 'category-header p-6 flex justify-between items-center cursor-pointer';
+                header.innerHTML = `
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-full bg-gold-gradient flex items-center justify-center text-black text-xl">
+                            <i class="${category.icon}"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-light-gold">${state.currentLang === 'ar' ? category.nameAr : category.nameFr}</h3>
+                            <p class="text-gray-300">${state.currentLang === 'ar' ? category.nameFr : category.nameAr}</p>
+                        </div>
+                    </div>
+                    <div class="transition-transform duration-500 ${category.expanded ? 'rotate-180' : ''}">
+                        <i class="fas fa-chevron-down text-gold text-2xl"></i>
+                    </div>
+                `;
+                
+                // Items container (initially hidden if not expanded)
+                const itemsContainer = document.createElement('div');
+                itemsContainer.className = `category-items overflow-hidden transition-all duration-500 ${category.expanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'}`;
+                
+                // Items grid
+                const itemsGrid = document.createElement('div');
+                itemsGrid.className = 'grid grid-cols-1 md:grid-cols-2 gap-6 p-6 pt-0';
+                itemsGrid.id = `items-container-${category.id}`;
+                
+                // Populate items
+                categoryItems.forEach(item => {
+                    const itemCard = document.createElement('div');
+                    itemCard.className = 'item-card bg-gradient-to-br from-gray-900/80 to-gray-800/60 rounded-xl p-5 border border-gold/30 transition-all duration-300 hover:border-gold/60 hover:scale-[1.02]';
+                    itemCard.dataset.id = item.id;
+                    
+                    const isSelected = state.selectedItems[item.id];
+                    
+                    itemCard.innerHTML = `
+                        <div class="flex flex-col md:flex-row md:items-center gap-6">
+                            <div class="md:w-1/3">
+                                <img src="${item.image}" alt="${item.nameAr}" class="w-full h-40 object-cover rounded-lg">
+                            </div>
+                            <div class="md:w-2/3">
+                                <div class="mb-4">
+                                    <h4 class="text-xl font-bold text-crisp-white">${state.currentLang === 'ar' ? item.nameAr : item.nameFr}</h4>
+                                    <p class="text-gray-300 mt-1">${state.currentLang === 'ar' ? item.descriptionAr : item.descriptionFr}</p>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-light-gold font-semibold">${state.currentLang === 'ar' ? 'الكمية:' : 'Quantité:'}</span>
+                                        <div class="flex items-center space-x-3">
+                                            <button class="quantity-btn-sm" onclick="changeItemQuantity(${item.id}, -1)">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                            <input type="number" min="0" value="${isSelected ? state.selectedItems[item.id].quantity : 0}" 
+                                                   class="quantity-input-sm" 
+                                                   onchange="updateItemQuantity(${item.id}, this.value)"
+                                                   id="quantity-${item.id}">
+                                            <button class="quantity-btn-sm" onclick="changeItemQuantity(${item.id}, 1)">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="text-gold font-bold ${isSelected ? 'opacity-100' : 'opacity-0'} transition-opacity">
+                                        <i class="fas fa-check-circle mr-1"></i>
+                                        <span>${state.currentLang === 'ar' ? 'محدد' : 'Sélectionné'}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    itemsGrid.appendChild(itemCard);
+                });
+                
+                itemsContainer.appendChild(itemsGrid);
+                
+                // Toggle expansion on header click
+                header.addEventListener('click', () => {
+                    toggleCategoryExpansion(category.id);
+                });
+                
+                categoryCard.appendChild(header);
+                categoryCard.appendChild(itemsContainer);
+                container.appendChild(categoryCard);
+            });
+        }
+
+        // Toggle category expansion
+        function toggleCategoryExpansion(categoryId) {
+            const category = state.categories.find(c => c.id === categoryId);
+            if (!category) return;
+            
+            category.expanded = !category.expanded;
+            
+            const categoryCard = document.querySelector(`.category-card[data-id="${categoryId}"]`);
+            const itemsContainer = categoryCard.querySelector('.category-items');
+            const arrow = categoryCard.querySelector('.fa-chevron-down').parentElement;
+            
+            if (category.expanded) {
+                itemsContainer.classList.remove('max-h-0', 'opacity-0');
+                itemsContainer.classList.add('max-h-[2000px]', 'opacity-100');
+                arrow.classList.remove('rotate-180');
+                arrow.classList.add('rotate-180');
+            } else {
+                itemsContainer.classList.remove('max-h-[2000px]', 'opacity-100');
+                itemsContainer.classList.add('max-h-0', 'opacity-0');
+                arrow.classList.remove('rotate-180');
+            }
+        }
+
+        // Change item quantity with buttons
+        function changeItemQuantity(itemId, delta) {
+            const input = document.getElementById(`quantity-${itemId}`);
+            let newQuantity = parseInt(input.value) + delta;
+            if (newQuantity < 0) newQuantity = 0;
+            
+            input.value = newQuantity;
+            updateItemQuantity(itemId, newQuantity);
+        }
+
+        // Update item quantity from input
+        function updateItemQuantity(itemId, value) {
+            let quantity = parseInt(value);
+            if (isNaN(quantity) || quantity < 0) quantity = 0;
+            
+            const item = state.items.find(i => i.id === itemId);
+            if (!item) return;
+            
+            if (quantity === 0) {
+                // Remove from selected items
+                if (state.selectedItems[itemId]) {
+                    delete state.selectedItems[itemId];
+                }
+            } else {
+                // Add or update in selected items
+                state.selectedItems[itemId] = {
+                    id: itemId,
+                    quantity: quantity,
+                    categoryId: item.categoryId
+                };
+            }
+            
+            // Update visual feedback
+            const itemCard = document.querySelector(`.item-card[data-id="${itemId}"]`);
+            const checkmark = itemCard.querySelector('.text-gold');
+            if (quantity > 0) {
+                checkmark.classList.remove('opacity-0');
+                checkmark.classList.add('opacity-100');
+            } else {
+                checkmark.classList.remove('opacity-100');
+                checkmark.classList.add('opacity-0');
+            }
+        }
+
+        // Language toggle
+        function setupLanguageToggle() {
+            const langAr = document.getElementById('lang-ar');
+            const langFr = document.getElementById('lang-fr');
+            
+            langAr.addEventListener('click', () => switchLanguage('ar'));
+            langFr.addEventListener('click', () => switchLanguage('fr'));
+        }
+
+        // Switch language
+        function switchLanguage(lang) {
+            if (state.currentLang === lang) return;
+            
+            state.currentLang = lang;
+            
+            // Update UI direction
+            document.body.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.body.className = lang === 'ar' ? 'rtl arabic-font' : 'ltr';
+            
+            // Update language toggle buttons
+            document.getElementById('lang-ar').classList.toggle('active', lang === 'ar');
+            document.getElementById('lang-fr').classList.toggle('active', lang === 'fr');
+            
+            // Update all text elements with data attributes
+            document.querySelectorAll('[data-ar]').forEach(element => {
+                const text = lang === 'ar' ? element.dataset.ar : element.dataset.fr;
+                if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                    element.placeholder = text;
+                } else {
+                    element.textContent = text;
+                }
+            });
+            
+            // Update service cards
+            updateServiceCardsText();
+            
+            // Update background hero text with fade animation
+            const heroText = document.getElementById('background-hero-text');
+            heroText.style.opacity = '0';
+            setTimeout(() => {
+                heroText.style.opacity = '0.15';
+            }, 300);
+        }
+
+        // Update service cards text based on current language
+        function updateServiceCardsText() {
+            document.querySelectorAll('.service-card').forEach(card => {
+                const serviceId = parseInt(card.dataset.id);
+                const service = state.services.find(s => s.id === serviceId);
+                if (service) {
+                    const title = card.querySelector('h3');
+                    const subtitle = card.querySelector('p');
+                    
+                    if (state.currentLang === 'ar') {
+                        title.textContent = service.nameAr;
+                        subtitle.textContent = service.nameFr;
+                    } else {
+                        title.textContent = service.nameFr;
+                        subtitle.textContent = service.nameAr;
+                    }
+                }
+            });
+        }
+
+        // Step navigation
+        function nextStep() {
+            // Validate current step
+            if (!validateCurrentStep()) return;
+            
+            // Hide current step
+            document.getElementById(`step-${state.currentStep}`).classList.remove('active');
+            
+            // Move to next step
+            state.currentStep++;
+            
+            // Show next step
+            document.getElementById(`step-${state.currentStep}`).classList.add('active');
+            
+            // Update UI
+            updateProgressBar();
+            updateStepIndicators();
+            
+            // Scroll to top for better mobile experience
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Step-specific actions
+            if (state.currentStep === 2) {
+                updateQuantityInputs();
+            } else if (state.currentStep === 6) {
+                updateOrderSummary();
+            }
+        }
+
+        function prevStep() {
+            // Hide current step
+            document.getElementById(`step-${state.currentStep}`).classList.remove('active');
+            
+            // Move to previous step
+            state.currentStep--;
+            
+            // Show previous step
+            document.getElementById(`step-${state.currentStep}`).classList.add('active');
+            
+            // Update UI
+            updateProgressBar();
+            updateStepIndicators();
+            
+            // Scroll to top for better mobile experience
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Validate current step
+        function validateCurrentStep() {
+            if (state.currentStep === 1) {
+                // At least one service must be selected
+                if (Object.keys(state.selectedItems).length === 0) {
+                    alert(state.currentLang === 'ar' ? 'يرجى اختيار خدمة واحدة على الأقل' : 'Veuillez sélectionner au moins un service');
+                    return false;
+                }
+            } else if (state.currentStep === 3) {
+                // Validate personal info
+                const name = document.getElementById('customer-name').value.trim();
+                const phone = document.getElementById('customer-phone').value.trim();
+                
+                if (!name) {
+                    alert(state.currentLang === 'ar' ? 'يرجى إدخال الاسم الكامل' : 'Veuillez entrer le nom complet');
+                    return false;
+                }
+                
+                if (!phone) {
+                    alert(state.currentLang === 'ar' ? 'يرجى إدخال رقم الهاتف' : 'Veuillez entrer le numéro de téléphone');
+                    return false;
+                }
+                
+                // Simple phone validation: at least 9 digits
+                const digitsOnly = phone.replace(/\D/g, '');
+                if (digitsOnly.length < 9) {
+                    alert(state.currentLang === 'ar' ? 'يرجى إدخال رقم هاتف صحيح (9 أرقام على الأقل)' : 'Veuillez entrer un numéro de téléphone valide (au moins 9 chiffres)');
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        // Update progress bar
+        function updateProgressBar() {
+            const progress = (state.currentStep / 7) * 100;
+            document.getElementById('progress-fill').style.width = `${progress}%`;
+        }
+
+        // Update step indicators
+        function updateStepIndicators() {
+            document.querySelectorAll('.step-indicator').forEach(indicator => {
+                const step = parseInt(indicator.dataset.step);
+                indicator.classList.remove('active', 'completed');
+                
+                if (step === state.currentStep) {
+                    indicator.classList.add('active');
+                } else if (step < state.currentStep) {
+                    indicator.classList.add('completed');
+                }
+            });
+        }
+
+        // Update quantity inputs
+        function updateQuantityInputs() {
+            const container = document.getElementById('quantities-container');
+            container.innerHTML = '';
+            
+            Object.values(state.selectedItems).forEach(itemData => {
+                const item = state.items.find(i => i.id === itemData.id);
+                if (!item) return;
+                
+                const div = document.createElement('div');
+                div.className = 'bg-gradient-to-r from-gray-900/60 to-gray-800/40 rounded-2xl p-8 border-2 border-gold/40 shadow-xl';
+                div.innerHTML = `
+                    <div class="flex flex-col md:flex-row md:items-center justify-between">
+                        <div class="mb-6 md:mb-0 md:pr-8">
+                            <div class="flex items-center space-x-4 mb-3">
+                                <div class="w-12 h-12 rounded-full bg-gold-gradient flex items-center justify-center text-black">
+                                    <i class="fas fa-box"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-2xl font-bold text-light-gold">${state.currentLang === 'ar' ? item.nameAr : item.nameFr}</h3>
+                                    <p class="text-gray-300 mt-1">${state.currentLang === 'ar' ? item.nameFr : item.nameAr}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-6">
+                            <button class="quantity-btn hover:bg-gold-gradient hover:text-black hover:scale-110" onclick="changeQuantity(${item.id}, -1)">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <input type="number" min="1" value="${itemData.quantity}" 
+                                   class="quantity-input text-2xl font-bold" 
+                                   onchange="updateQuantity(${item.id}, this.value)"
+                                   id="quantity-${item.id}">
+                            <button class="quantity-btn hover:bg-gold-gradient hover:text-black hover:scale-110" onclick="changeQuantity(${item.id}, 1)">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(div);
+            });
+        }
+
+        // Change quantity with buttons
+        function changeQuantity(itemId, delta) {
+            if (!state.selectedItems[itemId]) return;
+            
+            let newQuantity = state.selectedItems[itemId].quantity + delta;
+            if (newQuantity < 1) newQuantity = 1;
+            
+            state.selectedItems[itemId].quantity = newQuantity;
+            document.getElementById(`quantity-${itemId}`).value = newQuantity;
+        }
+
+        // Update quantity from input
+        function updateQuantity(itemId, value) {
+            if (!state.selectedItems[itemId]) return;
+            
+            let quantity = parseInt(value);
+            if (isNaN(quantity) || quantity < 1) quantity = 1;
+            
+            state.selectedItems[itemId].quantity = quantity;
+        }
+
+        // Update order summary
+        function updateOrderSummary() {
+            // Services summary
+            const servicesContainer = document.getElementById('summary-services');
+            servicesContainer.innerHTML = '';
+            
+            Object.values(state.selectedItems).forEach(itemData => {
+                const item = state.items.find(i => i.id === itemData.id);
+                if (!item) return;
+                
+                const div = document.createElement('div');
+                div.className = 'flex justify-between items-center py-4 border-b border-gold/20';
+                div.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center text-gold">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <span class="text-crisp-white font-medium">${state.currentLang === 'ar' ? item.nameAr : item.nameFr}</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <span class="text-light-gold">${state.currentLang === 'ar' ? 'الكمية:' : 'Quantité:'}</span>
+                        <span class="bg-gold-gradient text-black font-bold px-4 py-1 rounded-full min-w-12 text-center">${itemData.quantity}</span>
+                    </div>
+                `;
+                servicesContainer.appendChild(div);
+            });
+            
+            // Personal info summary
+            const personalContainer = document.getElementById('summary-personal');
+            const name = document.getElementById('customer-name').value;
+            const phone = document.getElementById('customer-phone').value;
+            
+            personalContainer.innerHTML = `
+                <div class="flex justify-between items-center py-3 border-b border-gold/20">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center text-gold">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <span class="text-light-gold">${state.currentLang === 'ar' ? 'الاسم' : 'Nom'}</span>
+                    </div>
+                    <span class="text-crisp-white font-semibold">${name}</span>
+                </div>
+                <div class="flex justify-between items-center py-3 border-b border-gold/20">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center text-gold">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <span class="text-light-gold">${state.currentLang === 'ar' ? 'الهاتف' : 'Téléphone'}</span>
+                    </div>
+                    <span class="text-crisp-white font-semibold">${phone}</span>
+                </div>
+            `;
+            
+            // Location summary
+            const locationContainer = document.getElementById('summary-location');
+            const city = document.getElementById('customer-city').value;
+            const map = document.getElementById('customer-map').value;
+            
+            let locationHTML = `
+                <div class="flex justify-between items-center py-3 border-b border-gold/20">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center text-gold">
+                            <i class="fas fa-city"></i>
+                        </div>
+                        <span class="text-light-gold">${state.currentLang === 'ar' ? 'المدينة' : 'Ville'}</span>
+                    </div>
+                    <span class="text-crisp-white font-semibold">${city || '-'}</span>
+                </div>
+            `;
+            
+            if (map) {
+                locationHTML += `
+                    <div class="flex justify-between items-center py-3">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center text-gold">
+                                <i class="fas fa-map"></i>
+                            </div>
+                            <span class="text-light-gold">${state.currentLang === 'ar' ? 'رابط الموقع' : 'Lien de localisation'}</span>
+                        </div>
+                        <a href="${map}" target="_blank" class="text-gold hover:text-light-gold break-all max-w-40 truncate">${map.substring(0, 30)}...</a>
+                    </div>
+                `;
+            }
+            
+            locationContainer.innerHTML = locationHTML;
+        }
+
+        // Send via WhatsApp
+        function sendViaWhatsApp() {
+            const name = document.getElementById('customer-name').value;
+            const phone = document.getElementById('customer-phone').value;
+            const city = document.getElementById('customer-city').value;
+            
+            // Build message
+            let message = '';
+            
+            if (state.currentLang === 'ar') {
+                message += `طلب جديد من AFRAH AMINE\n\n`;
+                message += `👤 الاسم: ${name}\n`;
+                message += `📞 الهاتف: ${phone}\n`;
+                if (city) message += `📍 المدينة: ${city}\n`;
+                message += `\nالخدمات المطلوبة:\n`;
+                
+                Object.values(state.selectedServices).forEach(serviceData => {
+                    const service = state.services.find(s => s.id === serviceData.id);
+                    if (service) {
+                        message += `• ${service.nameAr}: ${serviceData.quantity}\n`;
+                    }
+                });
+                
+                message += `\nشكراً لاختياركم AFRAH AMINE!`;
+            } else {
+                message += `Nouvelle demande - AFRAH AMINE\n\n`;
+                message += `👤 Nom: ${name}\n`;
+                message += `📞 Téléphone: ${phone}\n`;
+                if (city) message += `📍 Ville: ${city}\n`;
+                message += `\nServices demandés:\n`;
+                
+                Object.values(state.selectedServices).forEach(serviceData => {
+                    const service = state.services.find(s => s.id === serviceData.id);
+                    if (service) {
+                        message += `• ${service.nameFr}: ${serviceData.quantity}\n`;
+                    }
+                });
+                
+                message += `\nMerci de choisir AFRAH AMINE!`;
+            }
+            
+            // Encode message for WhatsApp URL
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/212643909940?text=${encodedMessage}`;
+            
+            // Open WhatsApp in new tab
+            window.open(whatsappUrl, '_blank');
+        }
+
+        // Restart form
+        function restartForm() {
+            // Reset state
+            state.currentStep = 1;
+            state.selectedServices = {};
+            
+            // Reset form inputs
+            document.getElementById('customer-name').value = '';
+            document.getElementById('customer-phone').value = '';
+            document.getElementById('customer-city').value = '';
+            document.getElementById('customer-map').value = '';
+            
+            // Reset UI
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.remove('active');
+            });
+            document.getElementById('step-1').classList.add('active');
+            
+            // Deselect all service cards
+            document.querySelectorAll('.service-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Update progress
+            updateProgressBar();
+            updateStepIndicators();
+        }
+
+        // Add CSS for text gradient
+        const style = document.createElement('style');
+        style.textContent = `
+            .text-gradient {
+                background: linear-gradient(135deg, #c9a96e, #f5e6c8);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .text-gold {
+                color: #c9a96e;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
